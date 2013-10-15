@@ -1,15 +1,17 @@
 require.config({
     paths:{
-        jquery:"vendor/jquery",
-        d3:"vendor/d3.v3.min",
-        easel:"vendor/easel/easeljs-0.7.0.min"
-
+        jquery:         "vendor/jquery",
+        d3:             "vendor/d3.v3.min",
+        easel:          "vendor/easel/easeljs-0.7.0.min",
+        circCollision:  "lib/circlesCollisionDetect",
+        angular:        "vendor/angular.min"
     }
 });
 
-require(['jquery','d3', 'easel' ], function($, d3, easel){
+require(['jquery','d3', 'easel', 'circCollision', 'angular' ], function($, d3, easel, circ, ng){
 
-        console.log("Hello world")
+
+
     var app = angular.module('baseApp', []);
 
     app.controller('baseController', function($scope){
@@ -27,5 +29,13 @@ require(['jquery','d3', 'easel' ], function($, d3, easel){
         }
 
     })
+
+    //-----
+
+    var circCollis = new circ()
+
+
+    console.log("Hello world", circCollis)
+
 
 });
