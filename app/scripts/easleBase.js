@@ -130,6 +130,10 @@ require(['jquery','d3', 'easel', 'circCollision', 'angular' ], function($, d3, e
         this.createStage(id);
     }
 
+    fibonaciSpiral.prototype.draw = function(){
+        console.log("draw called")
+    }
+
     var _fib = new fibonaciSpiral('canvasId1')
     _fib.setTarget("fibDiv")
     _fib.createStage();
