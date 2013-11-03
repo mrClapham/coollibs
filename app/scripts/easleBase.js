@@ -140,6 +140,10 @@ require(['jquery','d3', 'easel', 'circCollision', 'angular' ], function($, d3, e
     //_fib.startTimer();
 
 
+
+    var _asleCicles = new E
+
+
     console.log("Hello wide world", _fib)
 
 });
