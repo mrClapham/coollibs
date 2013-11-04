@@ -30,9 +30,9 @@ require(['jquery','d3', 'easel', 'circCollision', 'angular' ], function($, d3, e
 
     })
 
-    //-----
+  //----- testing git remote
 
-    function fibonaciSpiral(){
+    function fibonaciSpiral(id){
         this.maxLeaves_     = 300
         // golden mea proportion
         this.g_             = 1/1.618033989;
@@ -47,44 +47,76 @@ require(['jquery','d3', 'easel', 'circCollision', 'angular' ], function($, d3, e
         this.timer          = null;
         this.targ           = null;
         this.canvas         = null;
+        this.degrees        = 0;
+        this.stage          = null;
+        this.id             = id
+        //this.init(id)
     }
 
     fibonaciSpiral.prototype.setTarget = function(targ){
-
+        console.log("setTarget")
         if(document.getElementById(targ)){
             this.targ=document.getElementById(targ);
             this.render();
         }
     }
 
+    fibonaciSpiral.prototype.createStage = function(){
+        console.log("createStage")
+        this.stage =  new createjs.Stage("mainCanv");
+        // this.targ.appendChild(this.canvas);
+
+
+    }
+
     fibonaciSpiral.prototype.render = function(){
+        console.log("render")
+
         this.targ.setAttribute('width', this.width+'px');
         this.targ.setAttribute('height', this.height+'px');
         this.targ.setAttribute('background-color', '#ff00ff');
 
 
         var canvas = document.createElement('canvas');
-        canvas.id     = "CursorLayer";
+        canvas.id     = this.id;
         canvas.width  = this.width;
         canvas.height = this.height;
         canvas.style.zIndex   = 8;
         canvas.style.position = "absolute";
         canvas.style.border   = "1px solid";
 
+    }
 
-        this.targ.appendChild(canvas);
+    fibonaciSpiral.plotPoints = function(startX, startY, degrees, radius){
+        var points = []
+        var x = Math.cos(radius * (degrees * Math.PI/180));
+        var y = Math.sin(radius * (degrees * Math.PI/180));
+           x+=startX;
+           y+=startY;
+        points = [x,y]
+
+        return points;
+
+    }
+
+    fibonaciSpiral.makeCircle = function(){
+        var circle = new createjs.Shape();
+        circle.graphics.beginFill("#ff00ff").drawCircle(90, 90, 50);
+        return circle;
     }
 
     fibonaciSpiral.prototype.onFrame = function(){
-        if(this.cur_){
-            this.cur_= -this.cur_;
-        }
-        this.rot_ += this.ga_;
-        this.rot -= parseInt(this.rot_ / 360) * 360;
-        this.rad *= this.rGrowth_ ;
-        var x = Math.cos(this.rot_ * Math.PI * 180) * this.rad_;
-        var y = Math.sin(this.rot_ * Math.PI * 180) * this.rad_;
-        console.log("rot leaves ",x)
+
+        var startX, startY, radius;
+        startX = 300;
+        startY = 300;
+        radius = 200;
+        this.degrees += 4;
+        var points = fibonaciSpiral.plotPoints(startX, startY, this.degrees, radius)
+        var circ = fibonaciSpiral.makeCircle()
+        this.stage.addChild( circ)
+        // console.log(circ )
+        //console.log(this.stage)
     }
 
     fibonaciSpiral.prototype.startTimer = function(){
@@ -94,14 +126,24 @@ require(['jquery','d3', 'easel', 'circCollision', 'angular' ], function($, d3, e
         }, 1000)
     }
 
-    var _fib = new fibonaciSpiral()
-    _fib.setTarget("fibDiv")
-    _fib.startTimer();
+    fibonaciSpiral.prototype.init = function(id){
+        this.createStage(id);
+    }
 
-    var circCollis = new circ()
+    fibonaciSpiral.prototype.draw = function(){
+        console.log("draw called")
+    }
+
+    var _fib = new fibonaciSpiral('canvasId1')
+    _fib.setTarget("fibDiv")
+    _fib.createStage();
+    //_fib.startTimer();
+
+
+
+    var _asleCicles = new E
 
 
     console.log("Hello wide world", _fib)
-
 
 });
