@@ -75,8 +75,8 @@ SpiroGraph.prototype.drawSpiral =  function (ctx, centerX, centerY, radius, angl
     var _rad1, _rad2, _rad3;
 
     _rad1 = radius;
-    _rad2 = 60;
-    _rad3 = _rad2 / 10;
+    _rad2 = 30;
+    _rad3 = _rad2 / 15;
 
     SpiroGraph.drawCircle(ctx, centerX, centerY, radius , '#00cccc', true);
 
@@ -106,7 +106,7 @@ SpiroGraph.prototype.drawSpiral =  function (ctx, centerX, centerY, radius, angl
 //    }
     var _this = this
 
-    this.animInterval = setInterval(function(){_this.drawGuidePath.call(_this) }, 5)
+    this.animInterval = setInterval(function(){_this.drawGuidePath.call(_this) }, 10)
 
 }
 
@@ -115,8 +115,8 @@ SpiroGraph.prototype.drawGuidePath = function(){
     var _rad1, _rad2, _rad3;
 
     _rad1 = this.radius;
-    _rad2 = 103;
-    _rad3 = 60;
+    _rad2 = 75;
+    _rad3 = 62;
 
     var gearRatio1 = (2 * Math.PI * _rad1) /  (2 * Math.PI * _rad2);
     var gearRatio2 = (2 * Math.PI * _rad2) /  (2 * Math.PI * _rad3);
