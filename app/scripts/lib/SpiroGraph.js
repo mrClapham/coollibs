@@ -31,8 +31,6 @@ SpiroGraph.prototype.init = function(targ, config){
 }
 
 
-
-
 SpiroGraph.prototype.makeCanvas = function(width, height, id){
     var canvas = document.createElement("canvas");
     canvas.className    = "myClass";
