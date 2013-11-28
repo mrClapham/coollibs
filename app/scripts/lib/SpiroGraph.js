@@ -22,6 +22,7 @@ SpiroGraph.prototype.init = function(targ, config){
     this.canvas = document.getElementById(this.targ).appendChild(this.makeCanvas(1000, 1000));
     this.ctx = this.canvas.getContext("2d");
     this.currentAngle = 0;
+    this.innerAngle = 0
     this.animInterval = null
     for(var prop in config){
         this[prop] = config[prop]
@@ -104,32 +105,40 @@ SpiroGraph.prototype.drawSpiral =  function (ctx, centerX, centerY, radius, angl
 //    }
     var _this = this
 
-    this.animInterval = setInterval(function(){_this.drawGuidePath.call(_this) }, 5)
+    this.animInterval = setInterval(function(){_this.drawGuidePath.call(_this) }, 4)
 
 }
 
-SpiroGraph.prototype.drawGuidePath = function(){
+SpiroGraph.prototype.clear = function(){
+    this.ctx.clearRect(0, 0, this.width, this.height);
+}
 
+SpiroGraph.prototype.drawGuidePath = function(){
+// this.clear()
     var _rad1, _rad2, _rad3;
 
     _rad1 = this.radius;
-    _rad2 = 103;
-    _rad3 = 60;
+    _rad2 = 160;
+    _rad3 = 82;
 
-    var gearRatio1 = (2 * Math.PI * _rad1) /  (2 * Math.PI * _rad2);
-    var gearRatio2 = (2 * Math.PI * _rad2) /  (2 * Math.PI * _rad3);
+    var gearRatio1 = (2 * Math.PI * _rad1-_rad2) /  (2 * Math.PI * _rad2);
+    var gearRatio2 = (2 * Math.PI * _rad1-_rad2) /  (2 * Math.PI * _rad3);
 
-    // SpiroGraph.drawCircle(this.ctx, this.centerX, this.centerY, this.radius , '#ff0000', true);
+    SpiroGraph.drawCircle(this.ctx, this.centerX, this.centerY, this.radius , '#cccccc', true);
+// innere circle
+    var points = SpiroGraph.circleToXY({x:this.centerX, y:this.centerY}, _rad1-_rad2, this.currentAngle);
 
-    var points = SpiroGraph.circleToXY({x:this.centerX, y:this.centerY}, _rad1, this.currentAngle);
+    var points2 = SpiroGraph.circleToXY({x:points.x, y:points.y}, _rad2, this.innerAngle*gearRatio1);
 
-    var points2 = SpiroGraph.circleToXY({x:points.x, y:points.y}, _rad2, this.currentAngle*gearRatio1);
+    //SpiroGraph.drawCircle(this.ctx, points.x, points.y, _rad2 , '#00ffff', true);
+
     SpiroGraph.drawCircle(this.ctx, points2.x, points2.y, 1, '#00ffff', false );
 
-    var points3 = SpiroGraph.circleToXY({x:points2.x, y:points2.y}, _rad3, this.currentAngle*gearRatio1);
+    var points3 = SpiroGraph.circleToXY({x:points2.x, y:points2.y}, -_rad3, this.innerAngle*gearRatio1);
     SpiroGraph.drawCircle(this.ctx, points3.x, points3.y, 1, '#ff00ff', false);
 
     this.currentAngle += 1
+    this.innerAngle -= 1
 }
 
 
