@@ -28,9 +28,9 @@ SpiroGraph.prototype.init = function(targ, config){
     this.height = 900;
     this.centerX = 450;
     this.centerY = 450;
-    this.radius = 250;
-    this.radius2 = 80;
-    this.radius3 = 54;
+    this.radius = 450;
+    this.radius2 = 180;
+    this.radius3 = 154;
     this.angle = 0;
     this.increment = .8
     this.canvas = document.getElementById(this.targ).appendChild(this.makeCanvas(this.width, this.height));
@@ -131,9 +131,9 @@ SpiroGraph.prototype.clear = function(ctx){
 SpiroGraph.prototype.drawGuidePath = function(){
 this.clear(this.ctxGuides)
 
-    this.radius = this.radius;
-    this.radius2 = 190;
-    this.radius3 = 72;
+//    this.radius = this.radius;
+//    this.radius2 = 190;
+//    this.radius3 = 72;
 
     var gearRatio1 = (2 * Math.PI * this.radius-this.radius2) /  (2 * Math.PI * this.radius2);
     var gearRatio2 = (2 * Math.PI *  this.radius-this.radius2) /  (2 * Math.PI * this.radius3);
