@@ -13,23 +13,6 @@ TestClass1.prototype.init = function(){
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 TestClass1.staticMethod = function(){
    alert("static")
 }
