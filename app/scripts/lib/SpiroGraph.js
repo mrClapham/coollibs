@@ -5,6 +5,18 @@
  * Time: 13:17
  * To change this template use File | Settings | File Templates.
  */
+
+// shim layer with setTimeout fallback
+window.requestAnimFrame = (function(){
+    return  window.requestAnimationFrame       ||
+        window.webkitRequestAnimationFrame ||
+        window.mozRequestAnimationFrame    ||
+        function( callback ){
+            window.setTimeout(callback, 1000 / 60);
+        };
+})();
+
+
 function SpiroGraph(targ){
     this.init(targ)
 }
@@ -20,6 +32,7 @@ SpiroGraph.prototype.init = function(targ, config){
     this.radius2 = 80;
     this.radius3 = 54;
     this.angle = 0;
+    this.increment = .8
     this.canvas = document.getElementById(this.targ).appendChild(this.makeCanvas(this.width, this.height));
     this.canvasGiudes = document.getElementById(this.targ).appendChild(this.makeCanvas(this.width, this.height));
     this.guideThickness = .5
@@ -106,7 +119,9 @@ SpiroGraph.prototype.drawSpiral =  function (ctx, centerX, centerY, radius, angl
 //    }
     var _this = this
 
-    this.animInterval = setInterval(function(){_this.drawGuidePath.call(_this) }, 4)
+   // this.animInterval = setInterval(function(){_this.drawGuidePath.call(_this) }, 4)
+    requestAnimationFrame(function(){_this.drawGuidePath.call(_this)})
+
 }
 
 SpiroGraph.prototype.clear = function(ctx){
@@ -138,8 +153,11 @@ this.clear(this.ctxGuides)
 
     this.drawCircle(this.ctx, points3.x, points3.y,.5, '#ff00ff', false);
 
-    this.currentAngle += 1
-    this.innerAngle -= 1
+    this.currentAngle += this.increment
+    this.innerAngle -= this.increment
+    var _this = this
+    requestAnimationFrame(function(){_this.drawGuidePath.call(_this)});
+
 }
 
 // STATIC FUNCTIONS
