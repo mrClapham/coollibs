@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+    <style>
+        body{
+            background-color: #000000;
+        }
+    </style>
+    <script type="text/javascript" src="scripts/lib/TestClass1.js"></script>
+    <script type="text/javascript" src="scripts/lib/SpiroGraph.js"></script>
+    <script type="text/javascript">
+
+        function onLoad(){
+            var myInstance = new TestClass1('div1', "ONE")
+            var myInstance2 = new TestClass1('div2', "TWO")
+            var _sp = new SpiroGraph("div1")
+
+        }
+
+
+    </script>
+
+</head>
+<body onload="onLoad()">
+
+<div id="div1">
+    div one
+</div>
+
+<div id="div2">
+    div two
+</div>
+
+<div id ="div3">
+    Div three
+</div>
+
+<div id ="div4">
+    Div four
+</div>
+
+</body>
+</html>
