@@ -60,7 +60,7 @@ SpiroGraph.prototype.init = function(targ, config){
 
     //this.ctxLines.moveTo(0,0);
 
-    this.drawSpiral(this.ctx , this.centerX, this.centerY, this.radius,.001)
+    this.drawSpiral(this.ctx , this.centerX, this.centerY, this.radius,.01)
 }
 
 
@@ -113,8 +113,6 @@ SpiroGraph.prototype.drawSpiral =  function (ctx, centerX, centerY, radius, angl
     // this.drawCircle(ctx, points2.x, points2.y, this.radius2, '#ff0000', true );
 
     var points3 = SpiroGraph.circleToXY({x:points2.x, y:points2.y}, this.radius2,  this.currentAngle);
-
-
 
 
     console.log('drawSpiral called')
@@ -206,7 +204,10 @@ SpiroGraph.circleToXY = function (centre, radius, angle){
 }
 
 // Methods
-
+/**
+ * The overall radius of the whole image.
+ * @param value
+ */
 SpiroGraph.prototype.setRaduis = function(value){
     this.radius = value;
 }
