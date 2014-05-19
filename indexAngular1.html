@@ -3,7 +3,9 @@
 <head>
     <script src="app/scripts/vendor/angular.min.js"></script>
     <script src="app/scripts/lib/SpiroGraph.js"></script>
-
+    <script src="app/scripts/vendor/jquery.js"></script>
+    <script src="app/scripts/vendor/jquery-ui/jquery-ui.min.js"></script>
+    <style type="text/css" src="app/scripts/vendor/jquery-ui-themes/smoothness/jquery-ui.min.css"></style>
     <style>
         #controls{
             z-index: 100;
@@ -54,6 +56,11 @@
         //--
 
         function onLoaded(){
+
+            var _outerSlider = new $.ui.slider
+
+            console.log(_outerSlider);
+
             var _clearBtt = document.getElementById("clearBtt")
 
 
