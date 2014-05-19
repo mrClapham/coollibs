@@ -18,45 +18,45 @@ window.requestAnimFrame = (function(){
 
 
 function SpiroGraph(targ){
-    this.init(targ)
+    this.init(targ);
 }
 // METHODS
 
 SpiroGraph.prototype.init = function(targ, config){
-    this.targ = targ;
-    this.width = 1000;
-    this.height = 1000;
-    this.centerX = 500;
-    this.centerY = 500;
-    this.radius = 430;
-    this.radius2 = 201;
-    this.radius3 = 54;
-    this.angle = 0;
-    this.increment = 2
-    this.canvas = document.getElementById(this.targ).appendChild(this.makeCanvas(this.width, this.height));
-    this.canvasGiudes = document.getElementById(this.targ).appendChild(this.makeCanvas(this.width, this.height));
-    this.canvasLines = document.getElementById(this.targ).appendChild(this.makeCanvas(this.width, this.height));
-    this.guideThickness = .5
-    this.ctx = this.canvas.getContext("2d");
-    this.ctxGuides = this.canvasGiudes.getContext("2d");
-    this.ctxLines = this.canvasLines.getContext("2d");
+    this.targ               = targ;
+    this.width              = 1000;
+    this.height             = 1000;
+    this.centerX            = 500;
+    this.centerY            = 500;
+    this.radius             = 430;
+    this.radius2            = 81;
+    this.radius3            = 54;
+    this.angle              = 0;
+    this.increment          = 2
+    this.canvas             = document.getElementById(this.targ).appendChild(this.makeCanvas(this.width, this.height));
+    this.canvasGiudes       = document.getElementById(this.targ).appendChild(this.makeCanvas(this.width, this.height));
+    this.canvasLines        = document.getElementById(this.targ).appendChild(this.makeCanvas(this.width, this.height));
+    this.guideThickness     = .5
+    this.ctx                = this.canvas.getContext("2d");
+    this.ctxGuides          = this.canvasGiudes.getContext("2d");
+    this.ctxLines           = this.canvasLines.getContext("2d");
     // colours
-    this.outerColor = "#458888";
-    this.innerColour = 'rgba(255,0,255,0.2)';
+    this.outerColor         = 'rgba(0,255,255,0.2)';
+    this.innerColour        = 'rgba(255,0,255,0.2)';
     this.innerLineThickness = .02;
     this.outerLineThickness = .02;
 
+    this.currentAngle       = 0;
+    this.innerAngle         = 0
+    this.animInterval       = null;
 
-    this.currentAngle = 0;
-    this.innerAngle = 0
-    this.animInterval = null
+    // Add the proerties from the initial config file
     for(var prop in config){
         this[prop] = config[prop]
     }
-
     // the lines part
     this.ctxLines.beginPath();
-    this.ctxLines.strokeStyle='#ff0000';
+    this.ctxLines.strokeStyle='rgba(255,255,0,0.2)';
 
     //this.ctxLines.moveTo(0,0);
 
@@ -87,7 +87,6 @@ SpiroGraph.prototype.drawCircle = function(ctx,x ,y,r, colour, border ){
 }
 
 
-
 SpiroGraph.prototype.drawCircles =  function (ctx, centerX, centerY, radius, angle){
     this.currentAngle = 0;
     var steps = 360/angle;
@@ -99,7 +98,14 @@ SpiroGraph.prototype.drawCircles =  function (ctx, centerX, centerY, radius, ang
         this.currentAngle += angle;
     }
 }
-
+/**
+ * The function which starts the process of drawing the spirals.
+ * @param ctx
+ * @param centerX
+ * @param centerY
+ * @param radius
+ * @param angle
+ */
 SpiroGraph.prototype.drawSpiral =  function (ctx, centerX, centerY, radius, angle){
     this.currentAngle = 0;
     var steps = 360/angle;
@@ -111,9 +117,7 @@ SpiroGraph.prototype.drawSpiral =  function (ctx, centerX, centerY, radius, angl
 
     var points2 = SpiroGraph.circleToXY({x:points.x, y:points.y}, this.radius2,  this.currentAngle);
     // this.drawCircle(ctx, points2.x, points2.y, this.radius2, '#ff0000', true );
-
     var points3 = SpiroGraph.circleToXY({x:points2.x, y:points2.y}, this.radius2,  this.currentAngle);
-
 
     console.log('drawSpiral called')
 
@@ -208,23 +212,23 @@ SpiroGraph.circleToXY = function (centre, radius, angle){
  * The overall radius of the whole image.
  * @param value
  */
-SpiroGraph.prototype.setRaduis = function(value){
+SpiroGraph.prototype.setRadius = function(value){
     this.radius = value;
 }
-SpiroGraph.prototype.getRaduis = function(){
+SpiroGraph.prototype.getRadius = function(){
     return this.radius;
 }
 
-SpiroGraph.prototype.setRaduis2 = function(value){
+SpiroGraph.prototype.setRadius2 = function(value){
     this.radius2 = value;
 }
-SpiroGraph.prototype.getRaduis2 = function(){
+SpiroGraph.prototype.getRadius2 = function(){
     return this.radius2;
 }
 //-----------
-SpiroGraph.prototype.setRaduis3 = function(value){
+SpiroGraph.prototype.setRadius3 = function(value){
     this.radius3 = value;
 }
-SpiroGraph.prototype.getRaduis3 = function(){
+SpiroGraph.prototype.getRadius3 = function(){
     return this.radius3;
 }
