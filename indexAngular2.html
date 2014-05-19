@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <script src="app/scripts/vendor/angular.min.js"></script>
+    <script type="text/javascript">
+
+
+
+        function controllerOne($scope){
+            $scope.textOne = "hello World"
+            $scope.addHello = function(word){
+                return "Hello "+word+"!"
+            }
+        }
+
+
+        function controllerTwo($scope){
+            $scope.textOne = "hello World"
+            $scope.addHello = function(word){
+                return "Goodby "+word+"!"
+            }
+        }
+
+        //-- clock
+
+        function clockController($scope){
+            $scope.now = new Date();
+            $scope.clockInteval = setInterval( function(){$scope.now = new Date()}, 1000 )
+            $scope.updateClock = function(){
+                $scope.now = new Date();
+            }
+            $scope.interval = setInterval(function(){$scope.$apply($scope.updateClock())}, 1000)
+        }
+
+
+        //-- module
+
+        var firstModule = angular.module('firstModule', [])
+        firstModule.controller('FirstController', function($scope) {
+            $scope.message = "hello there";
+        })
+        .run(function($rootScope){$rootScope.rootname = "rooty"})
+
+        var secondModule = angular.module('secondModule', [])
+        secondModule.controller('secondController', function($scope) {
+            $scope.message2 = "goodby there";
+        })
+
+
+
+    </script>
+    <title></title>
+</head>
+<body>
+<div ng-app="firstModule" ng-controller="FirstController">
+    <div>
+        <p>name = {{rootname}}</p>
+        <p>name = {{message}}</p>
+    </div>
+</div>
+
+<div ng-app="secondModule" ng-controller="secondController">
+    <div>
+        <p>message = {{message}}</p>
+    </div>
+</div>
+
+
+
+</body>
+</html>
