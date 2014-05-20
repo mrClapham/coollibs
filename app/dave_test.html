@@ -4,20 +4,23 @@
     <title></title>
     <script type="text/javascript" src="scripts/lib/imageGrid/ImageGrid.js"></script>
     <script type="text/javascript">
-        var ig0 = new ImageGrid("Zero");
-        var ig1 = new ImageGrid("one");
-        var ig2 = new ImageGrid("two");
-        ig1.setWidth(200)
-        ig2.setWidth(300)
 
-        console.log(ig0)
+        function onLoaded(){
+        var _targ = document.getElementById("targ");
+        var ig1 = new ImageGrid("one", 100, 150, _targ);
+        ig1.setWidth(60);
+        ig1.setHeight(60);
+        ig1.setGridSpacing(4);
+        ig1.setImage("images/salmon.jpeg");
+        }
     </script>
 </head>
-<body>
+<body onload="onLoaded()">
 
-<ul>
-    <li class="lnk"><a href="#" </li>
-</ul>
+
+
+
+<div id="targ">Trag</div>
 
 </body>
 </html>
