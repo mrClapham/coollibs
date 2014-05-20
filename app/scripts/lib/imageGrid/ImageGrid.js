@@ -8,7 +8,7 @@ var ImageGrid = (function (name){
             _image:null,
             _imageSrc:'http://www.html5canvastutorials.com/demos/assets/darth-vader.jpg',
             _ImageData:null,
-            _gridSpacing:5,
+            _gridSpacing:10,
             _width:200,
             _height:200,
             _imageWidth:null,
@@ -38,7 +38,8 @@ var ImageGrid = (function (name){
                 _private._grid = [];
                 var _xDivisions = parseInt(_private._ImageData.width / _private._gridSpacing);
                 var _yDivisions = parseInt(_private._ImageData.height / _private._gridSpacing);
-
+                    console.log("Width ",_private._ImageData.width)
+                    console.log("height",_private._ImageData.width)
                 console.log("DIVISIONS    ",_xDivisions, _yDivisions);
                 var step = _private._gridSpacing;
                 for(var i=0; i<_yDivisions; i++){
@@ -52,7 +53,7 @@ var ImageGrid = (function (name){
                        // _private._context.putImageData(dt, step*i, 30);
 
                         _private._context.fillStyle="#FF0000";
-                        _private._context.fillRect(step*i, step*n,_private._gridSpacing-2,_private._gridSpacing-2);
+                        _private._context.fillRect(step*i, step*n,_private._gridSpacing-1,_private._gridSpacing-1);
                     }
                 }
                 console.log(_private._grid)
