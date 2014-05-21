@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <script src="app/scripts/vendor/angular.min.js"></script>
+    <script src="app/scripts/lib/SpiroGraph.js"></script>
+    <script src="app/scripts/vendor/jquery.js"></script>
+    <!--<script src="app/scripts/vendor/jquery-ui/jquery-ui.min.js"></script>-->
+    <!--<style type="text/css" src="app/scripts/vendor/jquery-ui-themes/smoothness/jquery-ui.min.css"></style>-->
+    <style>
+        #controls{
+            z-index: 100;
+            width: 100%;;
+            height: 40px;
+            background-color: #cccccc;
+        }
+        #spitoDiv{
+            position: relative;
+        }
+
+    </style>
+
+
+
+    <script type="text/javascript">
+
+        function controllerOne($scope){
+            $scope.textOne = "hello World"
+            $scope.addHello = function(word){
+                return "Hello "+word+"!"
+            }
+        }
+
+        function controllerTwo($scope){
+            $scope.textOne = "hello World"
+            $scope.addHello = function(word){
+                return "Goodby "+word+"!"
+            }
+        }
+
+        //-- clock
+
+        function clockController($scope){
+            $scope.now = new Date();
+            $scope.clockInteval = setInterval( function(){$scope.now = new Date()}, 1000 )
+            $scope.updateClock = function(){
+                $scope.now = new Date();
+            }
+            $scope.interval = setInterval(function(){$scope.$apply($scope.updateClock())}, 1000)
+        }
+
+        //-- module
+
+        angular.module('firstModule', [])
+                .run(function($rootScope){$rootScope.rootname = "rooty"})
+
+        //--
+
+        function onLoaded(){
+
+
+
+            var _clearBtt = document.getElementById("clearBtt")
+
+
+            var _spiro = new SpiroGraph("spitoDiv")
+
+            _clearBtt.addEventListener('mousedown', function(e){
+                e.preventDefault();
+                _spiro.clearAll()
+            });
+
+            r1.addEventListener('mousedown', function(e){
+                e.preventDefault();
+                //_spiro.setRaduis(270);
+                onUpdated()
+            });
+
+
+            r4.addEventListener('mousedown', function(e){
+                e.preventDefault();
+                _spiro.setPlaying(true)
+            });
+
+
+            r5.addEventListener('mousedown', function(e){
+                e.preventDefault();
+                _spiro.setPlaying(false)
+            });
+
+
+            function onUpdated(){
+                _spiro.setRaduis(document.getElementById("r1Val").value)
+                _spiro.setRaduis2(document.getElementById("r2Val").value)
+                _spiro.setRaduis3(document.getElementById("r3Val").value)
+            }
+
+        }
+
+
+    </script>
+    <title>Spirograph</title>
+</head>
+<body onload="onLoaded()">
+
+
+
+</div>
+<div id ="controls">
+    <button id="clearBtt">Clear</button>
+    <button id="r1">R1</button>
+    <button id="r2">R2</button>
+    <button id="r3">R3
+
+    <button id="r4">play</button>
+    <button id="r5">pause</button>
+
+    <input id="r1Val" value="200" />
+    <input id="r2Val" value="300" />
+    <input id="r3Val" value="400" />
+</div>
+
+<div id="spitoDiv">  </div>
+
+
+</body>
+</html>

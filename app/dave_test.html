@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+    <style>
+        body{
+            background-color: #000000;
+        }
+    </style>
+    <script type="text/javascript" src="scripts/lib/imageGrid/ImageGrid.js"></script>
+    <script type="text/javascript" src="scripts/vendor/d3.v3.min.js"></script>
+    <script type="text/javascript">
+
+        function onLoaded(){
+        var _targ = document.getElementById("targ");
+        var ig1 = new ImageGrid(400, 500, _targ);
+            ig1.listen(ImageGrid.enums.IMAGE_PARSED, function(e){
+                console.log(e);
+            })
+        ig1.setGridSpacing(14);
+        ig1.setImage("images/Helvetica-by-Stempel_web.jpg");
+                var ig2 = new ImageGrid(540, 300, _targ);
+            ig2.listen(ImageGrid.enums.IMAGE_PARSED, function(e){
+                console.log(e);
+            })
+            ig2.setGridSpacing(8);
+            ig2.setImage("images/lou.jpg");
+
+    console.log(ig1)
+    console.log(ig2)
+
+        }
+    </script>
+</head>
+<body onload="onLoaded()">
+
+
+
+
+<div id="targ">You may have to wait a while for this to load.</div>
+
+</body>
+</html>

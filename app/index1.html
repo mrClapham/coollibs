@@ -1,18 +1,50 @@
 <!DOCTYPE html>
 <html>
 <head>
+    <script src="scripts/vendor/angular.min.js"></script>
+    <script src="scripts/vendor/slider.js"></script>
     <title></title>
     <style>
         body{
             background-color: #000000;
         }
+        #controls{
+            z-index: 100;
+        }
+        #div2{
+            display: block;
+            width: 400px;
+            height: 60px;
+            background-color: #008200;
+            z-index: 1000;
+
+
+        }
+        
     </style>
+    <!--<script type="text/javascript" src="scripts/lib/TestClass1.js"></script>-->
     <script type="text/javascript" src="scripts/lib/SpiroGraph.js"></script>
     <script type="text/javascript">
 
         function onLoad(){
-//            var myInstance2 = new TestClass1('div2', "TWO")
-            var _sp = new SpiroGraph("div1")
+
+            var _sp = new SpiroGraph("div1");
+
+            var clearBtt = document.getElementById('div2');
+
+            console.log(clearBtt)
+
+            clearBtt.addEventListener('click', onClick)
+
+            function onClick(){
+                alert("CLICKED ....")
+            }
+
+
+//            window,setTimeout(function(){_sp.setRadius2(100)}, 4000)
+//            window,setTimeout(function(){_sp.setRadius2(200)}, 3500)
+//            window,setTimeout(function(){_sp.setRadius2(300)}, 3000)
+//            window,setTimeout(function(){_sp.setRadius2(400)}, 2500)
 
         }
 
@@ -21,9 +53,10 @@
 
 </head>
 <body onload="onLoad()">
-
+<div id="controls">    <button id="clearBtt">clear</button> </div>
 <div id="div1">
     div one
+
 </div>
 
 <div id="div2">
