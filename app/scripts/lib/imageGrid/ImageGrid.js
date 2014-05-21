@@ -1,14 +1,16 @@
 /**
  * Created by grahamclapham on 19/05/2014.
  */
-var ImageGrid = (function (name){
+var ImageGrid = (function (){
 
 
-    var _scope = function(n, width, height, opt_target){
+    var _scope = function(width, height, opt_target){
 
         //Non public functions
         this._private = {
-            _name:name,
+            _name:null,
+            _renderOriginal: false,
+            _renderProcessed: true,
             _dispatcher:null,
             _image:null,
             _imageSrc:'http://www.html5canvastutorials.com/demos/assets/darth-vader.jpg',
@@ -22,40 +24,27 @@ var ImageGrid = (function (name){
             _outputCanvas:null,
             _context:null,
             _outputContext:null,
-            _opt_target:null,
-            _grid:[],
+            _opt_target:opt_target ? opt_target : null,
+            _grid:[]
         };
 
-
-        this._private._name = n;
-        this._private._width = width;
-        this._private._height = height;
         this._private._dispatcher = document.createElement('div');
-        console.log(opt_target)
-        if(opt_target) this._private._opt_target = opt_target;
-
         this._private._canvas = ImageGrid.makeCanvas(this._private._width, this._private._height, "newCanv");
         this._private._context = this._private._canvas.getContext('2d');
-        console.log( this._private._context  )
         this._private._outputCanvas = ImageGrid.makeCanvas(this._private._width, this._private._height, "newCanv");
         this._private._outputContext = this._private._outputCanvas.getContext('2d');
-
-        init.call(this);
+        if(this._private._opt_target) init.call(this);
     };
 
     // private functions
     var  init = function(){
-//        this._private._canvas = ImageGrid.makeCanvas(this._private._width, this._private._height, "newCanv");
-//        this._private._context = this._private._canvas.getContext('2d');
-//        console.log( this._private._context  )
-//        this._private._outputCanvas = ImageGrid.makeCanvas(this._private._width, this._private._height, "newCanv");
-//        this._private._outputContext = this._private._outputCanvas.getContext('2d');
+        console.log("intCalled");
     }
 
     var _onTargetSet = function(){
         if(this._private._opt_target){
-            this._private._opt_target.appendChild(this._private._canvas)
-            this._private._opt_target.appendChild(this._private._outputCanvas)
+           if(this._private._renderOriginal) this._private._opt_target.appendChild(this._private._canvas)
+           if(this._private._renderProcessed)  this._private._opt_target.appendChild(this._private._outputCanvas)
         }
     };
 
@@ -68,17 +57,13 @@ var ImageGrid = (function (name){
         this._private._grid = [];
         var _xDivisions = parseInt(this._private._ImageData.width / this._private._gridSpacing);
         var _yDivisions = parseInt(this._private._ImageData.height / this._private._gridSpacing);
-        console.log("Name ",this._private._name)
-        console.log("Width ",this._private._ImageData.width)
-        console.log("height",this._private._ImageData.height)
-        console.log("DIVISIONS    ",_xDivisions, _yDivisions);
-
         var step = this._private._gridSpacing;
         for(var i=0; i<_yDivisions; i++){
             this._private._grid.push([])
             for(var n=0; n<_xDivisions; n++){
                 var dt =  ImageGrid.getImageData(this._private._context, step*n, step*i, step, step);
-                var _pixelObject = {r:dt.data[0], g:dt.data[1], b:dt.data[2], a:dt.data[3] }
+                var luminosity = parseInt( (dt.data[0] / 255) * 100)
+                var _pixelObject = {r:dt.data[0], g:dt.data[1], b:dt.data[2], a:dt.data[3], greyscale: ImageGrid.rgbToGreyscale(dt.data[0],dt.data[1],dt.data[2]), position:{x:n,y:i}, luminosity:luminosity }
                 this._private._grid[i].push( _pixelObject );
                 var _rgbValue = "rgba("+dt.data[0]+","+ dt.data[1]+","+dt.data[2]+","+dt.data[3]+")";
                 ImageGrid.drawCircle(this._private._outputContext, step*n, step*i,this._private._gridSpacing/2 , ImageGrid.rgbToGreyscale(dt.data[0],dt.data[1],dt.data[2]), true)
@@ -87,6 +72,11 @@ var ImageGrid = (function (name){
         }
         var _event = new CustomEvent(ImageGrid.enums.IMAGE_PARSED, { 'detail': this._private._grid });
         this._private._dispatcher.dispatchEvent(_event)
+    }
+
+    var _drawGridImage = function(){
+
+
     }
 
     var _onImageSet = function(){
