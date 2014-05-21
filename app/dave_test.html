@@ -2,16 +2,34 @@
 <html>
 <head>
     <title></title>
+    <style>
+        body{
+            background-color: #000000;
+        }
+    </style>
     <script type="text/javascript" src="scripts/lib/imageGrid/ImageGrid.js"></script>
     <script type="text/javascript">
 
         function onLoaded(){
         var _targ = document.getElementById("targ");
         var ig1 = new ImageGrid("one", 400, 500, _targ);
-//        ig1.setWidth(60);
-//        ig1.setHeight(160);
-        ig1.setGridSpacing(12);
+            ig1.listen(ImageGrid.enums.IMAGE_PARSED, function(e){
+                console.log(e);
+            })
+        ig1.setGridSpacing(14);
         ig1.setImage("images/Helvetica-by-Stempel_web.jpg");
+
+
+            var ig2 = new ImageGrid("two", 200, 200, _targ);
+            ig2.listen(ImageGrid.enums.IMAGE_PARSED, function(e){
+                console.log(e);
+            })
+            ig2.setGridSpacing(8);
+            ig2.setImage("images/image5.png");
+
+    console.log(ig1)
+    console.log(ig2)
+
         }
     </script>
 </head>
