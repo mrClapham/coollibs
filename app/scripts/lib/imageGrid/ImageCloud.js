@@ -61,11 +61,13 @@ InageCloud = (function(){
                 return col
             })
             .attr("transform", function(d, i) {
-                return "translate("+ (d.position.x* _this._private._gridZize*Math.random()*100)+","+ (d.position.y * _this._private._gridZize*Math.random()*100)+")";
+                //return "translate("+ (d.position.x* _this._private._gridZize*Math.random()*100)+","+ (d.position.y * _this._private._gridZize*Math.random()*100)+")";
+                return "translate("+ (i* _this._private._gridZize*Math.random()*200)+","+ (d.position.y * _this._private._gridZize*20)+")"
             })
             .transition()
-            .delay(20)
-            .duration(3000)
+            //.delay(60)
+            .ease("bounce")
+            .duration(1000)
                 .attr("transform", function(d, i) {
                     return "translate("+ (d.position.x* _this._private._gridZize)+","+ (d.position.y * _this._private._gridZize)+")";
                 })

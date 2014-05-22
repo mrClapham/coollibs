@@ -64,22 +64,32 @@ var ImageGrid = (function (){
             this._private._grid.push([])
             for(var n=0; n<_xDivisions; n++){
                 var dt =  ImageGrid.getImageData(this._private._context, step*n, step*i, step, step);
-                var luminosity = parseInt( (dt.data[0] / 255) * 100)
-                var _pixelObject = {r:dt.data[0], g:dt.data[1], b:dt.data[2], a:dt.data[3], greyscale: ImageGrid.rgbToGreyscale(dt.data[0],dt.data[1],dt.data[2]), position:{x:n,y:i}, luminosity:luminosity }
-                this._private._grid[i].push( _pixelObject );
-                this._private._flatGrid.push(_pixelObject)
+                var luminosity = parseInt( (dt.data[0] / 255) * 100);
                 var _rgbValue = "rgba("+dt.data[0]+","+ dt.data[1]+","+dt.data[2]+","+dt.data[3]+")";
+
+                var _pixelObject = {r:dt.data[0], g:dt.data[1], b:dt.data[2], a:dt.data[3], rgba:_rgbValue, greyscale: ImageGrid.rgbToGreyscale(dt.data[0],dt.data[1],dt.data[2]), position:{x:n,y:i}, luminosity:luminosity }
+               // this._private._grid[i].push( _pixelObject );
+                this._private._flatGrid.push(_pixelObject)
 //                ImageGrid.drawCircle(this._private._outputContext, step*n, step*i,this._private._gridSpacing/2 , ImageGrid.rgbToGreyscale(dt.data[0],dt.data[1],dt.data[2]), true)
 //                ImageGrid.drawCircle(this._private._outputContext, step*n, step*i,(this._private._gridSpacing/2) -2 , _rgbValue, false)
             }
         }
         var _event = new CustomEvent(ImageGrid.enums.IMAGE_PARSED, { 'detail': this._private._flatGrid });
+        _drawGridImage.call(this);
         this._private._dispatcher.dispatchEvent(_event)
     }
 
     var _drawGridImage = function(){
-
-
+        console.log(this._private._flatGrid)
+        for(var item in this._private._flatGrid){
+            var stepx, stepy, rgba, greyscale, current;
+            current = this._private._flatGrid[item];
+            stepx = current.position.x * this._private._gridSpacing;
+            stepy = current.position.y * this._private._gridSpacing;
+            rgba = current.rgba;
+            greyscale  = current.greyscale;
+            ImageGrid.drawCircle(this._private._outputContext, stepx, stepy,(this._private._gridSpacing/2) -2 , rgba, true);
+        }
     }
 
     var _onImageSet = function(){
@@ -143,6 +153,18 @@ var ImageGrid = (function (){
             },
             listen:function(evt, callback){
                 this.getDispatcher().addEventListener(evt, callback)
+            },
+            setRenderOriginal:function(value ){
+                this._private._renderOriginal = value;
+            },
+            getRenderOriginal:function(){
+                return this._private._renderOriginal;
+            },
+            setRenderProcessed:function(value){
+                 this._private._renderProcessed = value;
+            },
+            getRenderProcessed:function(){
+                return this._private._renderProcessed;
             }
     }
 
