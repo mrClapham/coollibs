@@ -16,30 +16,23 @@
     <script type="text/javascript">
 
         function onLoaded() {
-            var imageSize = {w:1000, h:1000, dotSize:3}
+            var imageSize = {w:800, h:800, dotSize:16}
 
             var _targSVG = document.getElementById("targSVG");
-            var _cloud1 = new InageCloud(imageSize.w * 2, imageSize.h * 2, imageSize.dotSize*2, _targSVG);
-
+            var _cloud1 = new InageCloud(imageSize.w , imageSize.h  , imageSize.dotSize, _targSVG);
 
             var _targ = document.getElementById("targ");
-            var ig1 = new ImageGrid(420, 580, _targ);
-            ig1.setGridSpacing(6);
-            ig1.setImage("images/Helvetica-by-Stempel_web.jpg");
-            // second image..
-            ig1.setGridSpacing(6);
 
-
-            var ig2 = new ImageGrid(1000, 1000, _targ);
+            var ig2 = new ImageGrid(800, 800, _targ);
 
             ig2.listen(ImageGrid.enums.IMAGE_PARSED, function (e) {
                 //console.log(e);
                 _cloud1.setData(e.detail)
-                initPhysics(e.detail);
+               // initPhysics(e.detail);
                 initNoiseImage(e.detail)
             })
-            ig2.setGridSpacing(6);
-            ig2.setImage("images/monroe.jpg");
+            ig2.setGridSpacing(16);
+            ig2.setImage("images/monroe_s.jpg");
 
 
             function initNoiseImage(arr){
@@ -52,12 +45,12 @@
                 var _tg = document.getElementById("targNoise");
                 var _noiseGrid = document.createElement('canvas');
                 var _ncontext = _noiseGrid.getContext("2d");
-                _noiseGrid.width = 600;
-                _noiseGrid.height = 600;
+                _noiseGrid.width = 800;
+                _noiseGrid.height = 800;
                 _tg.appendChild(_noiseGrid);
-                var _spacing = 10
+                var _spacing = imageSize.dotSize
                 for(var dot in arr){
-                   ImageGrid.drawCircle(_ncontext, arr[dot].position.x*_spacing, arr[dot].position.y*_spacing, ((1 + arr[dot].noise) * 5)/2, arr[dot].rgba, false);
+                   ImageGrid.drawCircle(_ncontext, arr[dot].position.x*_spacing, arr[dot].position.y*_spacing, ((1 + arr[dot].noise) * (imageSize.dotSize / 2) )/2, arr[dot].rgba, false);
                 }
 
 
