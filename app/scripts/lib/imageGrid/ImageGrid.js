@@ -26,7 +26,8 @@ var ImageGrid = (function (){
             _outputContext:null,
             _opt_target:opt_target ? opt_target : null,
             _grid:[],
-            _flatGrid:[]
+            _flatGrid:[],
+            _ignoreValue: {r:255, g:255, b:255}  // is there a colour which you do not wish to be added to the array?
         };
 
         this._private._dispatcher = document.createElement('div');
@@ -66,10 +67,12 @@ var ImageGrid = (function (){
                 var dt =  ImageGrid.getImageData(this._private._context, step*n, step*i, step, step);
                 var luminosity = parseInt( (dt.data[0] / 255) * 100);
                 var _rgbValue = "rgba("+dt.data[0]+","+ dt.data[1]+","+dt.data[2]+","+dt.data[3]+")";
-
-                var _pixelObject = {r:dt.data[0], g:dt.data[1], b:dt.data[2], a:dt.data[3], rgba:_rgbValue, greyscale: ImageGrid.rgbToGreyscale(dt.data[0],dt.data[1],dt.data[2]), position:{x:n,y:i}, luminosity:luminosity }
-               // this._private._grid[i].push( _pixelObject );
-                this._private._flatGrid.push(_pixelObject)
+                var ignore = this._private._ignoreValue;
+                if(ignore.r == dt.data[0] && ignore.g == dt.data[1] && ignore.b == dt.data[2]){
+                }else{
+                    var _pixelObject = {r:dt.data[0], g:dt.data[1], b:dt.data[2], a:dt.data[3], rgba:_rgbValue, greyscale: ImageGrid.rgbToGreyscale(dt.data[0],dt.data[1],dt.data[2]), position:{x:n,y:i}, luminosity:luminosity }
+                    this._private._flatGrid.push(_pixelObject)
+                }
 //                ImageGrid.drawCircle(this._private._outputContext, step*n, step*i,this._private._gridSpacing/2 , ImageGrid.rgbToGreyscale(dt.data[0],dt.data[1],dt.data[2]), true)
 //                ImageGrid.drawCircle(this._private._outputContext, step*n, step*i,(this._private._gridSpacing/2) -2 , _rgbValue, false)
             }

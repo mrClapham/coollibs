@@ -3,44 +3,132 @@
 <head>
     <title></title>
     <style>
-        body{
+        body {
             background-color: #000000;
         }
     </style>
     <script type="text/javascript" src="scripts/lib/imageGrid/ImageGrid.js"></script>
     <script type="text/javascript" src="scripts/lib/imageGrid/ImageCloud.js"></script>
+    <scriPT type="text/javascript" src="scripts/vendor/physics.min.js"></scriPT>
     <script type="text/javascript" src="scripts/vendor/d3.v3.min.js"></script>
     <script type="text/javascript">
 
-        function onLoaded(){
-
+        function onLoaded() {
+            var imageSize = {w:540, h:300, dotSize:6}
 
             var _targSVG = document.getElementById("targSVG");
-            var _cloud1 = new InageCloud(1280, 1020, 14, _targSVG);
+            var _cloud1 = new InageCloud(imageSize.w * 2, imageSize.h*2, imageSize.dotSize*2, _targSVG);
 
 
-        var _targ = document.getElementById("targ");
-        var ig1 = new ImageGrid(1200, 1200, _targ);
-//            ig1.listen(ImageGrid.enums.IMAGE_PARSED, function(e){
-//                //console.log(e);
-//                _cloud1.setData(e.detail)
-//
-//            })
-        ig1.setGridSpacing(14);
-        ig1.setImage("images/Helvetica-by-Stempel_web.jpg");
+            var _targ = document.getElementById("targ");
+//            var ig1 = new ImageGrid(420, 580, _targ);
+//            ig1.setGridSpacing(6);
+//            ig1.setImage("images/Helvetica-by-Stempel_web.jpg");
+//            // second image..
+//            ig1.setGridSpacing(6);
 
 
-            var ig2 = new ImageGrid(1529, 1536, _targ);
-            ig2.listen(ImageGrid.enums.IMAGE_PARSED, function(e){
+            var ig2 = new ImageGrid(200, 200, _targ);
+
+            ig2.listen(ImageGrid.enums.IMAGE_PARSED, function (e) {
                 //console.log(e);
                 _cloud1.setData(e.detail)
-
+                initPhysics(e.detail);
             })
-            ig2.setGridSpacing(15);
-            ig2.setImage("images/monroe.jpg");
+            ig2.setGridSpacing(6);
+            ig2.setImage("images/image5.png");
 
-        ////
 
+
+
+            ////
+            function initPhysics(arr) {
+
+                // Create a physics instance which uses the Verlet integration method
+                var physics = new Physics();
+                physics.integrator = new Verlet();
+
+                // Design some behaviours for particles
+                var avoidMouse = new Attraction();
+                var pullToCenter = new Attraction();
+                    pullToCenter.target.x = 300;
+                    pullToCenter.target.y = 300;
+                    pullToCenter.strength = 120;
+
+                // Allow particle collisions to make things interesting
+                var collision = new Collision();
+
+                for ( var i = 0; i < arr.length; i++ ) {
+
+                    // Create a particle
+                    var particle = new Particle( Math.random() );
+                    var position = new Vector( arr[i].position.x * 10, arr[i].position.y * 10 );
+                    particle.setRadius( arr[i].luminosity/10 );
+                    particle.moveTo( position );
+
+                    // Make it collidable
+                    collision.pool.push( particle );
+
+                    // Apply behaviours
+                    //particle.behaviours.push( avoidMouse, pullToCenter, collision );
+                    var attraction = new Attraction({x:300, y:300}, 30, 300);
+                    //var repulsion = new Attraction({x:10, y:10}, 200, -200);
+                   // particle.behaviours.push( avoidMouse,    collision );
+                   // particle.behaviours.push( attraction, collision);
+                    particle.behaviours.push(attraction, collision, pullToCenter);
+                    var  s = new Spring(arr[i].position.x * 10, arr[i].position.y, 10, 1.0);
+
+                    console.log(s)
+                    // Add to the simulation
+                    physics.particles.push( particle );
+                    // physics.springs.push(s)
+
+
+                }
+                // -- crude set interval to get me statrted
+                var canvas = document.createElement("canvas");
+                canvas.width            = 600;
+                canvas.height           = 600;
+
+                canvas.addEventListener('mouseup', function(e){
+                    for(var i=0; i<physics.particles.length; i++){
+                       for(var j = 0; j<physics.particles[i].behaviours.length; j++){
+                           if(physics.particles[i].behaviours[j] == collision){
+                               physics.particles[i].behaviours.splice(j, 1)
+                           }
+                       }
+
+                    }
+                })
+                ///
+                canvas.addEventListener('mousedown', function(e){
+                    for(var i=0; i<physics.particles.length; i++){
+                        //physics.particles[i].behaviours= []
+                        var v = new Vector( arr[i].position.x * 10, arr[i].position.y * 10 );
+                        var  s = new Spring(arr[i].position.x * 10, arr[i].position.y, 10, 1.0);
+                       // physics.particles[i].moveTo(v)
+                       // physics.springs.push(s)
+                        physics.particles[i].moveTo(v)
+
+                    }
+                })
+
+                var ctx = canvas.getContext('2d')
+                _targSVG.appendChild(canvas)
+                var int = this.setInterval(function(){
+                  physics.step();
+                  ctx.clearRect(0,0,600, 600)
+
+                  // Render particles
+                  for ( var i = 0, n = physics.particles.length; i < n; i++ ) {
+                      var particle = physics.particles[i];
+//                      example.beginPath();
+//                      example.arc( particle.pos.x, particle.pos.y, particle.radius, 0, Math.PI * 2 );
+//                      example.fill();
+                      ImageGrid.drawCircle(ctx, particle.pos.x, particle.pos.y, particle.radius, '#ff00ff', false);
+                  }
+              }, 30)
+            }
 
         }
     </script>
