@@ -1,0 +1,58 @@
+<html>
+<head>
+    <title>My first Three.js app</title>
+    <style>canvas { width: 100%; height: 100% }</style>
+</head>
+<body>
+<script src="components/threejs/build/three.min.js"></script>
+<script>
+    var _height, _width;
+    _height = 800;
+    _width = 700;
+
+    var _fov      =  85               //— Camera frustum vertical field of view.
+    var _aspect   =  _width/_height   //— Camera frustum aspect ratio.
+    var _near     =  0.1              //— Camera frustum near plane.
+    var _far      =  1000             //— Camera frustum far plane.
+
+
+    var scene = new THREE.Scene();
+    var camera = new THREE.PerspectiveCamera(_fov, _aspect, _near, _far);
+
+    var renderer = new THREE.WebGLRenderer();
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    document.body.appendChild(renderer.domElement);
+
+
+    /*
+    For the BoxGeometry
+     */
+
+    var _boxWidth, _boxWidth, _boxDdepth, _boxWidthSegments, _boxHeightSegments, _boxDepthSegments;
+    _boxWidth           = 3;
+    _boxWidth           = 3;
+    _boxDdepth          = 3;
+    _boxWidthSegments   = 6;
+    _boxHeightSegments  = 6;
+    _boxDepthSegments   = 6;
+
+    var geometry = new THREE.CubeGeometry(_boxWidth, _boxWidth, _boxDdepth, _boxWidthSegments, _boxHeightSegments, _boxDepthSegments);
+    var material = new THREE.MeshBasicMaterial({color: 0x00ff00});
+    var cube = new THREE.Mesh(geometry, material);
+    scene.add(cube);
+
+    camera.position.z = 5;
+
+    var render = function () {
+        requestAnimationFrame(render);
+
+       // cube.rotation.x += 0.1;
+        cube.rotation.y += 0.1;
+
+        renderer.render(scene, camera);
+    };
+
+    render();
+</script>
+</body>
+</html>
