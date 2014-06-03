@@ -11,35 +11,51 @@
     <script type="text/javascript" src="scripts/lib/imageGrid/ImageCloud.js"></script>
     <scriPT type="text/javascript" src="scripts/vendor/physics.min.js"></scriPT>
     <script type="text/javascript" src="scripts/vendor/d3.v3.min.js"></script>
+    <script type="text/javascript" src="components/noisejs/index.js"></script>
+
     <script type="text/javascript">
 
         function onLoaded() {
-            var imageSize = {w:540, h:300, dotSize:6}
+            var imageSize = {w:800, h:800, dotSize:16}
 
             var _targSVG = document.getElementById("targSVG");
-            var _cloud1 = new InageCloud(imageSize.w * 2, imageSize.h*2, imageSize.dotSize*2, _targSVG);
-
+            var _cloud1 = new InageCloud(imageSize.w , imageSize.h  , imageSize.dotSize, _targSVG);
 
             var _targ = document.getElementById("targ");
-//            var ig1 = new ImageGrid(420, 580, _targ);
-//            ig1.setGridSpacing(6);
-//            ig1.setImage("images/Helvetica-by-Stempel_web.jpg");
-//            // second image..
-//            ig1.setGridSpacing(6);
 
-
-            var ig2 = new ImageGrid(200, 200, _targ);
+            var ig2 = new ImageGrid(800, 800, _targ);
 
             ig2.listen(ImageGrid.enums.IMAGE_PARSED, function (e) {
                 //console.log(e);
                 _cloud1.setData(e.detail)
-                initPhysics(e.detail);
+               // initPhysics(e.detail);
+                initNoiseImage(e.detail)
             })
-            ig2.setGridSpacing(6);
-            ig2.setImage("images/image5.png");
+            ig2.setGridSpacing(16);
+            ig2.setImage("images/monroe_s.jpg");
 
 
+            function initNoiseImage(arr){
+                var noise = new Noise();
+                noise.seed(Math.random());
+                for(var cell in arr){
+                    var _noise = noise.simplex2(arr[cell].position.x, arr[cell].position.y);
+                    arr[cell].noise = _noise;
+                }
+                var _tg = document.getElementById("targNoise");
+                var _noiseGrid = document.createElement('canvas');
+                var _ncontext = _noiseGrid.getContext("2d");
+                _noiseGrid.width = 800;
+                _noiseGrid.height = 800;
+                _tg.appendChild(_noiseGrid);
+                var _spacing = imageSize.dotSize
+                for(var dot in arr){
+                   ImageGrid.drawCircle(_ncontext, arr[dot].position.x*_spacing, arr[dot].position.y*_spacing, ((1 + arr[dot].noise) * (imageSize.dotSize / 2) )/2, arr[dot].rgba, false);
+                }
 
+
+                console.log(_cloud1);
+            }
 
             ////
             function initPhysics(arr) {
@@ -68,7 +84,6 @@
 
                     // Make it collidable
                     collision.pool.push( particle );
-
                     // Apply behaviours
                     //particle.behaviours.push( avoidMouse, pullToCenter, collision );
                     var attraction = new Attraction({x:300, y:300}, 30, 300);
@@ -77,19 +92,14 @@
                    // particle.behaviours.push( attraction, collision);
                     particle.behaviours.push(attraction, collision, pullToCenter);
                     var  s = new Spring(arr[i].position.x * 10, arr[i].position.y, 10, 1.0);
-
-                    console.log(s)
                     // Add to the simulation
                     physics.particles.push( particle );
                     // physics.springs.push(s)
-
-
                 }
                 // -- crude set interval to get me statrted
                 var canvas = document.createElement("canvas");
                 canvas.width            = 600;
                 canvas.height           = 600;
-
                 canvas.addEventListener('mouseup', function(e){
                     for(var i=0; i<physics.particles.length; i++){
                        for(var j = 0; j<physics.particles[i].behaviours.length; j++){
@@ -97,7 +107,6 @@
                                physics.particles[i].behaviours.splice(j, 1)
                            }
                        }
-
                     }
                 })
                 ///
@@ -137,6 +146,7 @@
 
 <div id="targSVG">You may have to wait a while for this to load.</div>
 <div id="targ">You may have to wait a while for this to load.</div>
+<div id="targNoise">You may have to wait a while for this to load.</div>
 
 </body>
 </html>
