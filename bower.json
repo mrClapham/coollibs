@@ -2,6 +2,7 @@
   "name": "cool_libraries",
   "version": "0.0.0",
   "homepage": "https://github.com/mrClapham/coollibs",
+  "directory": "components",
   "authors": [
     "Graham Clapham <graham.clapham@thomsonreuters.com>"
   ],
@@ -18,4 +19,5 @@
     "noisejs": "*",
     "threejs": "*"
   }
+
 }
