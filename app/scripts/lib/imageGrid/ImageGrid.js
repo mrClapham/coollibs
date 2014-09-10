@@ -52,7 +52,7 @@ var ImageGrid = (function (){
 
     //////////
     var _onGridSpacingChanged = function(){
-        // console.log("_onGridSpacingChanged ",this._private._gridSpacing+ " ",  this._private._name, this.getWidth()  )
+         console.log("_onGridSpacingChanged ",this._private._gridSpacing+ " ",  this._private._name, this.getWidth()  )
     }
 
     var _makeImageGrid = function(){
@@ -128,7 +128,7 @@ var ImageGrid = (function (){
                 this._private._gridSpacing = value;
                 _onGridSpacingChanged.call(this);
             },
-//            setImage:function(value){
+//          setImage:function(value){
 //                this._private._image = value
 //                _onImageSet.call(this);
 //            },
@@ -230,4 +230,14 @@ ImageGrid.enums = {
     IMAGE_PARSED:"imageParsed"
 }
 
+
+/// Test inheritance
+var ImageGrid2 = function(){};
+ImageGrid2.prototype = new ImageGrid();        // Here's where the inheritance occurs
+ImageGrid2.prototype.constructor=ImageGrid2;       // Otherwise instances of Cat would have a constructor of Mammal
+
+
+ImageGrid2.prototype.toString=function(){
+    return '[ImageGrid2  "]';
+}
 

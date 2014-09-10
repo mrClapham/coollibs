@@ -11,7 +11,7 @@
     <script type="text/javascript" src="scripts/lib/imageGrid/ImageCloud.js"></script>
     <scriPT type="text/javascript" src="scripts/vendor/physics.min.js"></scriPT>
     <script type="text/javascript" src="scripts/vendor/d3.v3.min.js"></script>
-    <script type="text/javascript" src="../bower_components/noisejs/index.js"></script>
+    <script type="text/javascript" src="components/noisejs/index.js"></script>
 
     <script type="text/javascript">
 
@@ -138,6 +138,18 @@
                   }
               }, 30)
             }
+
+
+
+            /// inheritance test
+
+            var tester = new ImageGrid2();
+             tester.setGridSpacing(34);
+
+            console.log(tester.getWidth() )
+
+
+
 
         }
     </script>
